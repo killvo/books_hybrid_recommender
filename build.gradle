@@ -1,0 +1,57 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.3.12.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
+group = 'org.chumak'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    configureEach {
+        exclude module: 'netty-transport-native-kqueue'
+    }
+}
+
+dependencies {
+    def mapstruct = "1.5.5.Final"
+
+    implementation 'org.glassfish.jersey.containers:jersey-container-servlet:3.1.2'
+    implementation 'org.apache.spark:spark-core_2.13:3.4.0'
+    implementation 'org.apache.spark:spark-sql_2.13:3.4.0'
+    implementation 'org.apache.spark:spark-mllib_2.13:3.4.0'
+    implementation 'com.github.javafaker:javafaker:1.0.2'
+    implementation "org.mapstruct:mapstruct:${mapstruct}"
+    implementation "org.mapstruct:mapstruct-processor:${mapstruct}"
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'javax.persistence:javax.persistence-api:2.2'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct}"
+
+    runtimeOnly 'org.postgresql:postgresql'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
